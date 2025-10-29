@@ -1,51 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interpreter.h                                      :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-alme <fde-alme@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 18:53:38 by fde-alme          #+#    #+#             */
-/*   Updated: 2025/10/29 18:59:45 by fde-alme         ###   ########.fr       */
+/*   Created: 2025/10/29 20:22:47 by fde-alme          #+#    #+#             */
+/*   Updated: 2025/10/29 20:46:51 by fde-alme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INTERPRETER_H
-# define INTERPRETER_H
-
-#define ERROR -1
-#define SUCCESS 1
+#ifndef LEXER_H
+# define LEXER_H
 
 #include <stddef.h>
+#include "token.h"
 
-typedef enum e_type
-{
-	INTEGER,
-	PLUS,
-	MINUS,
-	MULT,
-	DIV,
-	EOF_TOK
-}	t_type;
-
-typedef struct s_token
-{
-	int		value;
-	t_type	type;
-}	t_token;
-
-typedef struct s_intr
+typedef struct s_lexer
 {
 	char	*str;
 	char	current_char;
 	size_t	pos;
-	t_token	*current_token;
-	void	(*error)(void);
-}	t_intr;
+}	t_lexer;
 
-t_token	*new_token(int value, t_type type);
-void	advance(t_intr *intr);
-void	skip_spaces(t_intr *intr);
-int		is_operator(t_intr *intr);
+void	init_lexer(t_lexer *lex, char *str);
+t_token	*get_next_token(t_lexer *lex);
 
 #endif

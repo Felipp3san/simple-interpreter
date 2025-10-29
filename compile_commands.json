@@ -1,0 +1,70 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "main.o",
+      "main.c"
+    ],
+    "directory": "/home/fde-alme/Documents/interpreter",
+    "file": "/home/fde-alme/Documents/interpreter/main.c",
+    "output": "/home/fde-alme/Documents/interpreter/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "token.o",
+      "token.c"
+    ],
+    "directory": "/home/fde-alme/Documents/interpreter",
+    "file": "/home/fde-alme/Documents/interpreter/token.c",
+    "output": "/home/fde-alme/Documents/interpreter/token.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "lexer.o",
+      "lexer.c"
+    ],
+    "directory": "/home/fde-alme/Documents/interpreter",
+    "file": "/home/fde-alme/Documents/interpreter/lexer.c",
+    "output": "/home/fde-alme/Documents/interpreter/lexer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "interpreter.o",
+      "interpreter.c"
+    ],
+    "directory": "/home/fde-alme/Documents/interpreter",
+    "file": "/home/fde-alme/Documents/interpreter/interpreter.c",
+    "output": "/home/fde-alme/Documents/interpreter/interpreter.o"
+  }
+]
