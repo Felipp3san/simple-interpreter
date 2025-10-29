@@ -12,6 +12,7 @@
 
 #include "interpreter.h"
 #include "lexer.h"
+#include "token.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -23,19 +24,10 @@
 */
 static void	eat(t_intr *intr, t_type type)
 {
-	if (intr->current_token->type == type)
-	{
-		free(intr->current_token);
+	if (intr->current_token.type == type)
 		intr->current_token = get_next_token(intr->lexer);
-		if (!intr->current_token)
-			intr->error();
-	}
 	else
-	{
-		free(intr->current_token);
-		intr->current_token = NULL;
 		intr->error();
-	}
 }
 
 /*
@@ -43,23 +35,10 @@ static void	eat(t_intr *intr, t_type type)
 */
 static int	is_operator(t_intr *intr)
 {
-	const t_type types[] = {
-		PLUS,
-		MINUS,
-		MULT,
-		DIV,
-		EOF_TOK
-	};
-	int			i;
-	
-	i = 0;
-	while (types[i] != EOF_TOK)
-	{
-		if (intr->current_token->type == types[i])
-			return (true);
-		i++;
-	}
-	return (false);
+	t_token	token;
+
+	token = intr->current_token;
+	return (token.type >= PLUS && token.type <= DIV);
 }
 
 /*
@@ -69,11 +48,11 @@ static int	is_operator(t_intr *intr)
 */
 static int	factor(t_intr *intr)
 {
-	int	value;
+	t_token	token;
 
-	value = intr->current_token->value;
+	token = intr->current_token;
 	eat(intr, INTEGER);
-	return (value);
+	return (token.value);
 }
 
 /*
@@ -84,24 +63,24 @@ static int	factor(t_intr *intr)
 */
 int	expr(t_intr *intr)
 {
-	t_token	*token;
+	t_token	token;
 	int		result;
 
 	result = factor(intr);
-	while (intr->current_token && is_operator(intr))
+	while (intr->current_token.type != EOF_TOK && is_operator(intr))
 	{
 		token = intr->current_token;
-		if (token->type == PLUS)
+		if (token.type == PLUS)
 		{
 			eat(intr, PLUS);
 			result = result + factor(intr);
 		}
-		else if (token->type == MINUS)
+		else if (token.type == MINUS)
 		{
 			eat(intr, MINUS);
 			result = result - factor(intr);
 		}
-		else if (token->type == MULT)
+		else if (token.type == MULT)
 		{
 			eat(intr, MULT);
 			result = result * factor(intr);
@@ -111,11 +90,6 @@ int	expr(t_intr *intr)
 			eat(intr, DIV);
 			result = result / factor(intr);
 		}
-	}
-	if (intr->current_token)
-	{
-		free(intr->current_token);
-		intr->current_token = NULL;
 	}
 	return (result);
 }
@@ -131,6 +105,4 @@ void	init_intr(t_intr *intr, t_lexer	*lexer)
 	intr->lexer = lexer;
 	intr->error = error;
 	intr->current_token = get_next_token(lexer);
-	if (!intr->current_token)
-		intr->error();
 }

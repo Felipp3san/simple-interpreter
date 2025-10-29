@@ -65,33 +65,33 @@ static int	integer(t_lexer *lex)
 	This method is responsible for breaking a sentence
 	apart into tokens. One token at a time.
 */
-t_token	*get_next_token(t_lexer *lex)
+t_token	get_next_token(t_lexer *lex)
 {
 	while (lex->current_char)
 	{
 		skip_spaces(lex);
 		if (isdigit(lex->current_char))
-			return (new_token(integer(lex), INTEGER));
+			return ((t_token){integer(lex), INTEGER});
 		else if (lex->current_char == '+')
 		{
 			advance(lex);
-			return (new_token(0, PLUS));
+			return ((t_token){0, PLUS});
 		}
 		else if (lex->current_char == '-')
 		{
 			advance(lex);
-			return (new_token(0, MINUS));
+			return ((t_token){0, MINUS});
 		}
 		else if (lex->current_char == '*')
 		{
 			advance(lex);
-			return (new_token(0, MULT));
+			return ((t_token){0, MULT});
 		}
 		else if (lex->current_char == '/')
 		{
 			advance(lex);
-			return (new_token(0, DIV));
+			return ((t_token){0, DIV});
 		}
 	}
-	return (new_token(0, EOF_TOK));
+	return ((t_token){0, EOF_TOK});
 }

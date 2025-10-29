@@ -18,7 +18,7 @@
 typedef struct s_intr
 {
 	t_lexer	*lexer;
-	t_token	*current_token;
+	t_token	current_token;
 	void	(*error)(void);
 }	t_intr;
 

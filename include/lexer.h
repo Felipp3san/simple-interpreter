@@ -24,6 +24,6 @@ typedef struct s_lexer
 }	t_lexer;
 
 void	init_lexer(t_lexer *lex, char *str);
-t_token	*get_next_token(t_lexer *lex);
+t_token	get_next_token(t_lexer *lex);
 
 #endif
