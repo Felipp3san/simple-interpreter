@@ -23,6 +23,8 @@ typedef enum e_type
 	INTEGER,
 	PLUS,
 	MINUS,
+	MULT,
+	DIV,
 	EOF_TOK
 }	t_type;
 
@@ -35,6 +37,7 @@ typedef struct s_token
 typedef struct s_intr
 {
 	char	*str;
+	char	current_char;
 	size_t	pos;
 	t_token	*current_token;
 	t_token	*left;
@@ -42,54 +45,75 @@ typedef struct s_intr
 	t_token	*op;
 }	t_intr;
 
+void	advance(t_intr *intr)
+{
+	intr->pos++;
+	if (intr->pos > strlen(intr->str) - 1)
+		intr->current_char = 0;
+	else
+		intr->current_char = intr->str[intr->pos];
+}
+
 void	skip_spaces(t_intr *intr)
 {
-	while (intr->str[intr->pos] && isspace(intr->str[intr->pos]))
-		intr->pos++;
+	while (intr->current_char && isspace(intr->current_char))
+		advance(intr);
+}
+
+t_token	*new_token(int value, t_type type)
+{
+	t_token	*token;
+
+	token = (t_token *) malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->value = value;
+	token->type = type;
+	return (token);
+}
+
+int		integer(t_intr *intr)
+{
+	int	result;
+
+	result = 0;
+	while (intr->current_char && isdigit(intr->current_char))
+	{
+		result = (result * 10) + (intr->current_char - '0');
+		advance(intr);
+	}
+	return (result);
 }
 
 t_token	*get_next_token(t_intr *intr)
 {
-	t_token	*token;
-	char	current_char;
-	int		value;
-
-	skip_spaces(intr);
-	token = (t_token *) malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	if (intr->pos > strlen(intr->str) - 1)
+	while (intr->current_char)
 	{
-		token->value = 0;
-		token->type = EOF_TOK;
-		return (token);
+		skip_spaces(intr);
+		if (isdigit(intr->current_char))
+			return (new_token(integer(intr), INTEGER));
+		else if (intr->current_char == '+')
+		{
+			advance(intr);
+			return (new_token(0, PLUS));
+		}
+		else if (intr->current_char == '-')
+		{
+			advance(intr);
+			return (new_token(0, MINUS));
+		}
+		else if (intr->current_char == '*')
+		{
+			advance(intr);
+			return (new_token(0, MULT));
+		}
+		else if (intr->current_char == '/')
+		{
+			advance(intr);
+			return (new_token(0, DIV));
+		}
 	}
-	current_char = intr->str[intr->pos];
-	if (isdigit(current_char))
-	{
-		value = 0;
-		while (isdigit(intr->str[intr->pos]))
-			value = (value * 10) + intr->str[intr->pos++] - '0';
-		token->value = value;
-		token->type = INTEGER;
-		return (token);
-	}
-	else if (current_char == '+')
-	{
-		token->value = 0;
-		token->type = PLUS;
-		intr->pos++;
-		return (token);
-	}
-	else if (current_char == '-')
-	{
-		token->value = 0;
-		token->type = MINUS;
-		intr->pos++;
-		return (token);
-	}
-	free(token);
-	return (NULL);
+	return (new_token(0, EOF_TOK));
 }
 
 int	eat(t_intr *intr, t_type type)
@@ -101,6 +125,7 @@ int	eat(t_intr *intr, t_type type)
 			return (ERROR);
 		return (SUCCESS);
 	}
+	intr->current_token = NULL;
 	return (ERROR);
 }
 
@@ -118,9 +143,19 @@ int	expr(t_intr *intr)
 		if (eat(intr, PLUS) == ERROR)
 			return (ERROR);
 	}
-	else
+	else if (intr->op->type == MINUS)
 	{
 		if (eat(intr, MINUS) == ERROR)
+			return (ERROR);
+	}
+	else if (intr->op->type == MULT)
+	{
+		if (eat(intr, MULT) == ERROR)
+			return (ERROR);
+	}
+	else
+	{
+		if (eat(intr, DIV) == ERROR)
 			return (ERROR);
 	}
 	intr->right = intr->current_token;
@@ -128,8 +163,12 @@ int	expr(t_intr *intr)
 		return (ERROR);
 	if (intr->op->type == PLUS)
 		return (intr->left->value + intr->right->value);
-	else
+	else if (intr->op->type == MINUS)
 		return (intr->left->value - intr->right->value);
+	else if (intr->op->type == MULT)
+		return (intr->left->value * intr->right->value);
+	else
+		return (intr->left->value / intr->right->value);
 }
 
 void	free_all(t_intr *intr)
@@ -139,7 +178,6 @@ void	free_all(t_intr *intr)
 		free(intr->left);
 		intr->left = NULL;
 	}
-		free(intr->left);
 	if (intr->op)
 	{
 		free(intr->op);
@@ -166,6 +204,7 @@ int	main(int argc, char **argv)
 		return (0);
 	memset(&intr, 0, sizeof(t_intr));
 	intr.str = argv[1];
+	intr.current_char = intr.str[intr.pos];
 	result = expr(&intr);
 	if (result == ERROR)
 		printf("Error\n");
