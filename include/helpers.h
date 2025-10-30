@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
+/*   helpers.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-alme <fde-alme@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 20:45:24 by fde-alme          #+#    #+#             */
-/*   Updated: 2025/10/30 00:52:57 by fde-alme         ###   ########.fr       */
+/*   Created: 2025/10/30 00:38:21 by fde-alme          #+#    #+#             */
+/*   Updated: 2025/10/30 00:43:54 by fde-alme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKEN_H
-# define TOKEN_H
+#ifndef HELPERS_H
+# define HELPERS_H
 
-typedef enum e_type
-{
-	INTEGER,
-	PLUS,
-	MINUS,
-	MUL,
-	DIV,
-	LPAREN,
-	RPAREN,
-	EOF_TOK
-}	t_type;
+# include "token.h"
 
-typedef struct s_token
-{
-	int		value;
-	t_type	type;
-}	t_token;
-
-t_token	*new_token(int value, t_type type);
+int	is_plus_minus(t_type type);
+int	is_mul_div(t_type type);
 
 #endif

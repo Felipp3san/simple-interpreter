@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-alme <fde-alme@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 20:45:24 by fde-alme          #+#    #+#             */
-/*   Updated: 2025/10/30 00:52:57 by fde-alme         ###   ########.fr       */
+/*   Created: 2025/10/30 00:36:44 by fde-alme          #+#    #+#             */
+/*   Updated: 2025/10/30 00:44:51 by fde-alme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKEN_H
-# define TOKEN_H
+#include "token.h"
+#include <stdbool.h>
 
-typedef enum e_type
+int	is_plus_minus(t_type type)
 {
-	INTEGER,
-	PLUS,
-	MINUS,
-	MUL,
-	DIV,
-	LPAREN,
-	RPAREN,
-	EOF_TOK
-}	t_type;
+	return (type == PLUS || type == MINUS);
+}
 
-typedef struct s_token
+int	is_mul_div(t_type type)
 {
-	int		value;
-	t_type	type;
-}	t_token;
-
-t_token	*new_token(int value, t_type type);
-
-#endif
+	return (type == MUL || type == DIV);
+}

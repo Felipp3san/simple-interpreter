@@ -6,7 +6,7 @@
 /*   By: fde-alme <fde-alme@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:22:26 by fde-alme          #+#    #+#             */
-/*   Updated: 2025/10/29 20:47:04 by fde-alme         ###   ########.fr       */
+/*   Updated: 2025/10/30 00:53:28 by fde-alme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,22 @@ t_token	get_next_token(t_lexer *lex)
 		else if (lex->current_char == '*')
 		{
 			advance(lex);
-			return ((t_token){0, MULT});
+			return ((t_token){0, MUL});
 		}
 		else if (lex->current_char == '/')
 		{
 			advance(lex);
 			return ((t_token){0, DIV});
+		}
+		else if (lex->current_char == '(')
+		{
+			advance(lex);
+			return ((t_token){0, LPAREN});
+		}
+		else if (lex->current_char == ')')
+		{
+			advance(lex);
+			return ((t_token){0, RPAREN});
 		}
 	}
 	return ((t_token){0, EOF_TOK});

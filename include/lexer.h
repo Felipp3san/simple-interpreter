@@ -6,15 +6,15 @@
 /*   By: fde-alme <fde-alme@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:22:47 by fde-alme          #+#    #+#             */
-/*   Updated: 2025/10/29 20:46:51 by fde-alme         ###   ########.fr       */
+/*   Updated: 2025/10/30 00:43:35 by fde-alme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-#include <stddef.h>
-#include "token.h"
+# include <stddef.h>
+# include "token.h"
 
 typedef struct s_lexer
 {
